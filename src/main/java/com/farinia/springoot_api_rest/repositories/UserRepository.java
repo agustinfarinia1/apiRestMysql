@@ -1,6 +1,7 @@
 package com.farinia.springoot_api_rest.repositories;
 
 import com.farinia.springoot_api_rest.models.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

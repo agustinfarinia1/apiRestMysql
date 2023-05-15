@@ -12,46 +12,53 @@ public class UserService implements InterfaceUserService {
     @Autowired
     UserRepository connection;
     @Override
-    public ArrayList<User> list() {
-
-        return (ArrayList<User>)connection.findAll();
+    public ArrayList<User> list(){
+        ArrayList<User> list = (ArrayList<User>) connection.findAll();
+        return list;
     }
 
     @Override
-    public User saveUser(User usuario) {
-        return (User)connection.save(usuario);
+    public User getUserById(Long id){
+        Optional<User> resp = connection.findById(id);
+        if(resp.isPresent()){
+            return resp.get();
+        }
+        return null;
     }
 
     @Override
-    public Boolean updateUser(User usuario) {
+    public User saveUser(User user){
+        user.setStatus(true);
+        user =  connection.save(user);
+        return user;
+    }
+
+    @Override
+    public Boolean updateUser(User user){
         boolean resp = false;
-        if(connection.findById(usuario.getId()) != null){
-            connection.save(usuario);
+        Optional<User> data = connection.findById(user.getId());
+        if (data.isPresent()) {
+            connection.save(user);
             resp = true;
         }
         return resp;
     }
 
     @Override
-    public Optional<User> getUserById(Long id) {
-        Optional<User> resp = connection.findById(id);
-        return resp;
-    }
-
-    @Override
     public ArrayList<User> getByPriority(int prioridad) {
-
         return connection.findByPriority(prioridad);
     }
 
 
     @Override
     public Boolean deleteUser(Long id) {
-        try{
-            connection.deleteById(id);
+        Optional<User> resp = connection.findById(id);
+        if(resp.isPresent()){
+            User user = resp.get();
+            user.setStatus(false);
+            connection.save(user);
             return true;
-        }catch(Exception err){
-            return false;
         }
+        return false;
     }
 }

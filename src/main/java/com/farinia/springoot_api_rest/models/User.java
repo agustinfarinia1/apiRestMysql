@@ -1,17 +1,19 @@
 package com.farinia.springoot_api_rest.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name= "user")
+@Where(clause = "status = true")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true,nullable = false)
     private Long id;
     private String name;
     private String email;
     private int priority;
+    private boolean status = true;
 
     public User() {
     }
@@ -21,6 +23,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.priority = priority;
+        this.status = true;
     }
 
     public Long getId() {
@@ -51,6 +54,14 @@ public class User {
         this.priority = priority;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -58,6 +69,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", priority=" + priority +
+                ", status=" + status +
                 '}';
     }
 }
